@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CraftyAI - Your Multimodal Crochet Assistant</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&amp;family=Quicksand:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#f0eee6",
+                    "surface-container-highest": "#e4e3db",
+                    "inverse-surface": "#30312c",
+                    "on-background": "#1b1c17",
+                    "surface-container-low": "#f5f4ec",
+                    "on-tertiary-fixed-variant": "#5a422a",
+                    "inverse-on-surface": "#f3f1e9",
+                    "on-secondary-fixed": "#251628",
+                    "on-secondary-fixed-variant": "#534155",
+                    "on-primary-fixed-variant": "#1a4e50",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1b1c17",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#eecaaa",
+                    "primary-container": "#a8dadc",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#fbf9f1",
+                    "secondary": "#6c586d",
+                    "tertiary-fixed-dim": "#e3c0a0",
+                    "surface-container-high": "#eae8e0",
+                    "outline": "#707979",
+                    "on-primary-fixed": "#002021",
+                    "primary-fixed-dim": "#9ecfd1",
+                    "primary-fixed": "#b9ecee",
+                    "surface-dim": "#dcdad2",
+                    "secondary-container": "#f5daf4",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#404848",
+                    "on-primary-container": "#306163",
+                    "on-tertiary-fixed": "#2a1704",
+                    "tertiary": "#74593f",
+                    "outline-variant": "#c0c8c8",
+                    "tertiary-fixed": "#ffdcbe",
+                    "on-secondary-container": "#725e73",
+                    "secondary-fixed": "#f5daf4",
+                    "surface-tint": "#356668",
+                    "on-error": "#ffffff",
+                    "primary": "#356668",
+                    "secondary-fixed-dim": "#d8bfd8",
+                    "background": "#fbf9f1",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#9ecfd1",
+                    "surface": "#fbf9f1",
+                    "on-tertiary-container": "#6e543a",
+                    "surface-variant": "#e4e3db"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "card-padding": "24px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Literata"],
+                    "headline-lg": ["Literata"],
+                    "label-md": ["Quicksand"],
+                    "headline-sm": ["Literata"],
+                    "headline-lg-mobile": ["Literata"],
+                    "label-sm": ["Quicksand"],
+                    "body-lg": ["Quicksand"],
+                    "body-md": ["Quicksand"]
+            },
+            "fontSize": {
+                    "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "700"}],
+                    "headline-sm": ["22px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["30px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .linen-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/linen-design.png");
+            background-repeat: repeat;
+        }
+        .bouncy-hover:hover {
+            transform: scale(1.03);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .spin-yarn {
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .dashed-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='32' ry='32' stroke='%23C0C8C8' stroke-width='3' stroke-dasharray='12%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden linen-texture">
+<!-- Top Navigation Bar -->
+<header class="w-full top-0 sticky bg-surface-bright dark:bg-surface-dim shadow-[0_4px_20px_rgba(216,191,216,0.1)] z-50">
+<div class="max-w-[1200px] mx-auto px-margin-desktop flex justify-between items-center h-20">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary tracking-tight">CraftyAI</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-all duration-200 font-label-md text-label-md hover:scale-105" href="#">My Patterns</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-all duration-200 font-label-md text-label-md hover:scale-105" href="#">Tutorials</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-all duration-200 font-label-md text-label-md hover:scale-105" href="#">Yarn Box</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-4 md:px-margin-desktop py-12">
+<!-- Hero Section -->
+<section class="text-center mb-16 space-y-4">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-2">What shall we stitch today?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Upload a photo of your yarn stash or an inspiration piece, and I'll help you craft the perfect pattern.</p>
+</section>
+<!-- Multimodal Input Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-8">
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-[0_8px_30px_rgba(216,191,216,0.15)] border border-surface-container-highest relative overflow-hidden">
+<!-- Texture Overlay -->
+<div class="absolute inset-0 opacity-5 pointer-events-none linen-texture"></div>
+<div class="relative z-10 space-y-8">
+<!-- Drag and Drop Zone -->
+<div id="dropzone" class="dashed-border p-12 text-center cursor-pointer hover:bg-surface-container-low transition-colors group relative">
+    <input type="file" id="fileInput" accept="image/*" class="hidden">
+    <div id="dropzoneContent">
+        <span class="material-symbols-outlined text-primary-container text-5xl mb-4 inline-block group-hover:scale-110 transition-transform" data-icon="cloud_upload">cloud_upload</span>
+        <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Upload Yarn or Inspiration</h3>
+        <p class="text-on-surface-variant font-body-md">Drag and drop your images here or click to browse</p>
+    </div>
+    <div id="previewContainer" class="hidden flex flex-col items-center justify-center gap-4">
+        <img id="imagePreview" src="" class="max-h-48 rounded-lg shadow-md border-2 border-primary-container object-contain">
+        <button type="button" id="removeImageBtn" class="bg-error text-white font-label-sm text-label-sm px-4 py-2 rounded-full hover:bg-red-700 transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm" data-icon="delete">delete</span> Remove Image
+        </button>
+    </div>
+</div>
+<!-- Text Input -->
+<div class="space-y-4">
+<label class="font-label-md text-label-md text-primary ml-2">Describe your project vision</label>
+<textarea id="promptInput" class="w-full h-32 p-card-padding bg-surface-container-low border-transparent focus:border-primary-container focus:ring-primary-container rounded-lg font-body-md text-on-surface transition-all placeholder:text-outline" placeholder="e.g., 'I have 3 skeins of chunky mustard wool. I want to make a cozy scarf with a waffle stitch...'"></textarea>
+</div>
+<!-- Action Button -->
+<div class="flex justify-center pt-4">
+<button class="bg-primary-container text-on-primary-container font-label-md text-headline-sm py-4 px-12 rounded-full bouncy-hover flex items-center gap-3 shadow-lg shadow-primary-container/20" id="generateBtn">
+<span class="material-symbols-outlined" data-icon="savings">savings</span>
+                                Generate Crochet Pattern
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Cards: Tips & Stats -->
+<div class="lg:col-span-4 space-y-gutter">
+<div class="bg-secondary-container p-6 rounded-lg text-on-secondary-container">
+<h4 class="font-headline-sm text-headline-sm mb-3">AI Yarn Tip</h4>
+<p class="font-body-md">For best results, upload photos in natural light so I can accurately identify the yarn weight and color palette!</p>
+</div>
+<div class="bg-tertiary-container p-6 rounded-lg text-on-tertiary-container flex items-center gap-4">
+<div class="bg-white p-3 rounded-full">
+<span class="material-symbols-outlined text-tertiary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<div class="font-label-md">Current Project</div>
+<div class="font-headline-sm">Lavender Tote</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dynamic Content Section (Loading & Empty States) -->
+<section class="mt-24 space-y-12">
+<!-- Loading State (Hidden by default) -->
+<div class="hidden flex-col items-center justify-center p-12 bg-surface-bright rounded-lg border-2 border-primary-container border-dotted max-w-2xl mx-auto" id="loadingState">
+<div class="relative mb-8">
+<span class="material-symbols-outlined text-8xl text-primary spin-yarn" data-icon="motion_photos_on">motion_photos_on</span>
+<span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-secondary" data-icon="flare">flare</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Stitching your pattern...</h3>
+<p class="font-body-md text-on-surface-variant">Gathering stitches and choosing the best hook for your yarn.</p>
+</div>
+<!-- Empty Response State -->
+<div class="bg-surface-container-low rounded-lg p-16 text-center border-4 border-dashed border-surface-container-highest max-w-4xl mx-auto" id="emptyResponse">
+<div class="floating mb-6 inline-block">
+<span class="material-symbols-outlined text-7xl text-outline-variant" data-icon="gesture">gesture</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-outline mb-4">Your Pattern Awaits</h2>
+<p class="font-body-md text-on-surface-variant max-w-lg mx-auto">Once you've shared your inspiration above, your personalized AI-generated crochet pattern will appear here like magic!</p>
+<div class="mt-8 flex justify-center gap-4 flex-wrap">
+<span class="px-4 py-2 bg-surface-container-high rounded-full font-label-sm text-label-sm text-on-surface-variant">Free-hand Support</span>
+<span class="px-4 py-2 bg-surface-container-high rounded-full font-label-sm text-label-sm text-on-surface-variant">Photo Analysis</span>
+<span class="px-4 py-2 bg-surface-container-high rounded-full font-label-sm text-label-sm text-on-surface-variant">Stitch Help</span>
+</div>
+</div>
+</section>
+<!-- Inspiration Gallery Section -->
+<section class="mt-24">
+<div class="flex justify-between items-end mb-8">
+<h2 class="font-headline-md text-headline-md text-primary">Community Creations</h2>
+<a class="text-secondary font-label-md flex items-center gap-1 hover:underline" href="#">View all gallery <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="group relative overflow-hidden rounded-lg aspect-square shadow-sm">
+<img alt="Crochet scarf" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A macro photograph of a beautifully textured mustard yellow crochet scarf laid on a rustic wooden table. Soft morning sunlight filters through a window, highlighting the intricate stitch patterns. The image has a warm, tactile feel consistent with a cozy home craft room atmosphere, using a soft pastel-influenced color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQq5GS7wPXnP3Wm_peGjduP6HPKHZtTvGa0HhEEBR-ysHN5Ow_HTPFS3LMpAtRzj2fqSKHxjfkeuoPNPG-qNinN28cCYOVsW2cgfAA8OTOPpRjvIFwiVvWTwGcYMBpt43AkdVs01IFg6ptphoTKxy728lXjo-hT8_reLMTuOhLf5Xbe7DQepL2QjT162JGs8k2phu0F89yNRv9vwy4X-1UxxN6T7qAwlWI_QnsgxyfRotnJyxv5UUNXBtqjPUxNFpYdKaH95zSS6X0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<span class="text-white font-label-sm text-label-sm">Waffle Scarf by Sarah</span>
+</div>
+</div>
+<div class="group relative overflow-hidden rounded-lg aspect-square shadow-sm">
+<img alt="Amigurumi" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A close-up shot of a small, adorable amigurumi owl crocheted in soft mint and lavender yarns. The owl is sitting on a fluffy white rug, surrounded by scattered balls of yarn in complementary pastel shades. The lighting is bright and cheerful, evoking a minimalist yet whimsical creative space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiPdXXRLmYoeWeUus_rGziULnQmi8X92xUyvbVraAbmBheQbXaWNe1jlGv2QTlmy6hl1I5Hyz7UdNLOQWDY_uYhAwhpjLKyJoFYb1-T22UVic1ddxa4i2ewUWeHDcA2g1AQgcTk1scXnUL_Oc9bZT3WEqeRB9lIB2EgF7OtbBxu2br_r5gAHafsmA8ZmgQOhwAQklqLlnlxcYcVkcFrNl1LsjlDzBUA5tMgM8Lxfz_NTtNBP9iOARByPQVoaLJlJYSdkrLuXTegQpQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<span class="text-white font-label-sm text-label-sm">Hootie the Owl</span>
+</div>
+</div>
+<div class="group relative overflow-hidden rounded-lg aspect-square shadow-sm">
+<img alt="Yarn stash" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="An aesthetically organized shelf containing various balls of high-quality wool and cotton yarn in soft earth tones, greens, and pinks. The shelving is light-colored wood, and the overall composition feels serene and inspiring. The light is diffused and soft, emphasizing the tactile quality of the textile materials." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeolhvkMqC76oxUt92Xd7MtrhNfpICiLWUs-0Jk-dlgN-cjwcgyXVhPW4Fy0HOhqo2gmcy4K-1jKYBL-9b6FzwQEqV0WE6T4jWQiNFtvyZ-YcjLxViO17t6qW6FpWXu58Fuw6HbaQnerQfxvZy9ZhVD80pySn4pblZToO51ZbFFpQ4e1-ylcUhcar31Y6_TQCoVpIdTjUo8B5BZ7HOAS_fpi-2bqpKIlAC81-bfh6GccXLbixh9DdFT1-GCak7Z9pS9lvtdecwsUWN"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<span class="text-white font-label-sm text-label-sm">Studio Palette</span>
+</div>
+</div>
+<div class="group relative overflow-hidden rounded-lg aspect-square shadow-sm">
+<img alt="Crochet hooks" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A collection of ergonomic crochet hooks with colorful handles arranged neatly on a piece of cream-colored linen fabric. Beside them lies a partially finished crochet project in a soft sage green. The scene is bright and airy, capturing the essence of a peaceful afternoon spent crafting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5VUbmVETjP4VorjlGy08emr1wSaQoZYJJyl4xpsEwNKQ_XncfH34n7VTQyHj044fUJxREDxJ511uF7zvi6OFrf5XwO2quzSeip66jtmsJFjK7vyMajpap3kwWW9-6gXW7MnN1nu8Q99iHjCmjC8-GT-roEICA1U27oOV7d0dRebozJ_oKixisAAhcv7fS2uYqwcV7sQOtRrTSVO49LRMZWZRntV63suz7An3EErD0IrCpo-qjOx03H6Nwkb9YmlBMAd0p73Qt9_o0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<span class="text-white font-label-sm text-label-sm">Essential Tools</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface-container-low dark:bg-inverse-surface mt-24">
+<div class="max-w-[1200px] mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="font-headline-sm text-headline-sm text-tertiary">CraftyAI</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant flex gap-8">
+<a class="hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="hover:text-secondary transition-colors" href="#">Terms</a>
+<a class="hover:text-secondary transition-colors" href="#">Contact Us</a>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+                © 2024 CraftyAI - Made with patience and yarn.
+            </div>
+</div>
+</footer>
+<script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const dropzoneContent = document.getElementById('dropzoneContent');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+        const promptInput = document.getElementById('promptInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const emptyState = document.getElementById('emptyResponse');
+        const loadingState = document.getElementById('loadingState');
+
+        let selectedFile = null;
+
+        // Click to select file
+        dropzone.addEventListener('click', (e) => {
+            if (e.target.closest('#removeImageBtn')) return;
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (fileInput.files && fileInput.files[0]) {
+                handleFile(fileInput.files[0]);
+            }
+        });
+
+        // Drag & Drop
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('bg-surface-container-high');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('bg-surface-container-high');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('bg-surface-container-high');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file.');
+                return;
+            }
+            selectedFile = file;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                dropzoneContent.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        removeImageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectedFile = null;
+            fileInput.value = '';
+            imagePreview.src = '';
+            previewContainer.classList.add('hidden');
+            dropzoneContent.classList.remove('hidden');
+        });
+
+        generateBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                alert('Please upload an image first!');
+                return;
+            }
+
+            // Hide empty state and show loading
+            emptyState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex-col', 'items-center', 'justify-center', 'border-dotted');
+            loadingState.classList.remove('bg-white', 'border-solid', 'max-w-4xl');
+            
+            // Render loading animation
+            loadingState.innerHTML = `
+                <div class="relative mb-8">
+                    <span class="material-symbols-outlined text-8xl text-primary spin-yarn" data-icon="motion_photos_on">motion_photos_on</span>
+                    <span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-secondary" data-icon="flare">flare</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-primary mb-2">Stitching your pattern...</h3>
+                <p class="font-body-md text-on-surface-variant">Gathering stitches and choosing the best hook for your yarn.</p>
+            `;
+
+            loadingState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            formData.append('prompt', promptInput.value || 'Generate a high-quality crochet pattern for the item in this image.');
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({ detail: `HTTP ${response.status}` }));
+                    throw new Error(errData.detail || `Server returned HTTP ${response.status}`);
+                }
+
+                const pattern = await response.json();
+                renderPattern(pattern);
+            } catch (error) {
+                console.error(error);
+                showError(error.message);
+            }
+        });
+
+        function renderPattern(pattern) {
+            const materialsHTML = pattern.materials.map(m => `<li>• ${m}</li>`).join('');
+            const colorsHTML = pattern.yarn_colors.map(c => `<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm">${c}</span>`).join(' ');
+            const instructionsHTML = pattern.crochet_instructions.map(inst => `<li class="border-b border-surface-container-low pb-2 last:border-b-0">${inst}</li>`).join('');
+            const tipsHTML = pattern.finishing_tips.map(tip => `<li>💡 ${tip}</li>`).join('');
+
+            loadingState.innerHTML = `
+                <div class="text-left w-full space-y-8 p-card-padding">
+                    <!-- Header -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-surface-container-highest pb-6">
+                        <div class="space-y-1">
+                            <h3 class="font-headline-lg text-headline-lg text-primary">${pattern.project_title}</h3>
+                            <div class="flex flex-wrap items-center gap-3 text-on-surface-variant font-label-md">
+                                <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-label-sm">${pattern.difficulty}</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg" data-icon="architecture">architecture</span> Hook: ${pattern.hook_size}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-4xl text-primary" data-icon="check_circle">check_circle</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                        <!-- Sidebar: Materials and Colors -->
+                        <div class="md:col-span-4 space-y-6">
+                            <div class="bg-surface-container p-6 rounded-lg border border-surface-container-highest">
+                                <h4 class="font-headline-sm text-headline-sm text-primary mb-3">Materials</h4>
+                                <ul class="text-on-surface-variant font-body-md space-y-2">
+                                    ${materialsHTML}
+                                </ul>
+                            </div>
+
+                            <div class="bg-surface-container p-6 rounded-lg border border-surface-container-highest">
+                                <h4 class="font-headline-sm text-headline-sm text-primary mb-3">Recommended Colors</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${colorsHTML}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Body: Instructions & Tips -->
+                        <div class="md:col-span-8 space-y-6">
+                            <div class="bg-white p-6 rounded-lg border border-surface-container-highest shadow-sm">
+                                <h4 class="font-headline-sm text-headline-sm text-primary mb-4 border-b border-surface-container-low pb-2">Crochet Instructions</h4>
+                                <ol class="text-on-surface font-body-md space-y-4 list-decimal list-inside leading-relaxed">
+                                    ${instructionsHTML}
+                                </ol>
+                            </div>
+
+                            ${pattern.finishing_tips && pattern.finishing_tips.length > 0 ? `
+                            <div class="bg-tertiary-container p-6 rounded-lg text-on-tertiary-container">
+                                <h4 class="font-headline-sm text-headline-sm mb-3">Finishing Tips</h4>
+                                <ul class="font-body-md space-y-2">
+                                    ${tipsHTML}
+                                </ul>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Bottom Actions -->
+                    <div class="flex gap-4 border-t border-surface-container-highest pt-6">
+                        <button onclick="window.print()" class="bg-primary text-white px-8 py-3 rounded-full font-label-md bouncy-hover shadow-md flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm" data-icon="print">print</span> Print Pattern
+                        </button>
+                        <button onclick="alert('Pattern saved successfully!')" class="bg-surface-container-high text-on-surface px-8 py-3 rounded-full font-label-md bouncy-hover flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm" data-icon="bookmark">bookmark</span> Save to My Patterns
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            loadingState.classList.remove('flex-col', 'items-center', 'justify-center', 'border-dotted');
+            loadingState.classList.add('bg-white', 'border-solid', 'max-w-4xl');
+        }
+
+        function showError(message) {
+            loadingState.innerHTML = `
+                <div class="text-center p-8 space-y-4">
+                    <span class="material-symbols-outlined text-6xl text-error inline-block" data-icon="error">error</span>
+                    <h3 class="font-headline-md text-headline-md text-error">Stitching Failed</h3>
+                    <p class="font-body-md text-on-surface-variant max-w-md mx-auto">${message}</p>
+                    <button id="retryBtn" class="bg-primary text-white px-6 py-2 rounded-full font-label-sm text-label-sm bouncy-hover">Try Again</button>
+                </div>
+            `;
+            
+            document.getElementById('retryBtn').addEventListener('click', () => {
+                loadingState.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                emptyState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }
+    </script>
+</body></html>
